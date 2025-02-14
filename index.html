@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Semangat Kerjanya Sayang!</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #ffebee;
+            color: #d32f2f;
+            padding: 50px;
+            overflow: hidden;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            display: inline-block;
+            position: relative;
+            z-index: 1;
+        }
+        h1 {
+            color: #b71c1c;
+        }
+        p {
+            font-size: 18px;
+        }
+        .heart {
+            font-size: 50px;
+            color: red;
+            animation: pulse 1.5s infinite;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+        /* Efek Floating Hearts */
+        .floating-heart {
+            position: absolute;
+            color: red;
+            font-size: 30px;
+            animation: float 5s infinite ease-in-out;
+        }
+        @keyframes float {
+            0% {
+                transform: translateY(0) scale(1);
+                opacity: 1;
+            }
+            50% {
+                transform: translateY(-200px) scale(1.2);
+                opacity: 0.7;
+            }
+            100% {
+                transform: translateY(-400px) scale(1.5);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <audio autoplay loop>
+        <source src="https://www.bensound.com/bensound-music/bensound-romantic.mp3" type="audio/mpeg">
+        Maaf, browser kamu tidak mendukung audio.
+    </audio>
+
+    <div class="container">
+        <h1>Hai Sayang! ❤️</h1>
+        <p>Semangat kerja ya! Aku bangga banget sama kamu. Jangan lupa istirahat dan makan yang cukup.</p>
+        <p>Aku selalu dukung kamu! Love you! 😘</p>
+        <div class="heart">❤️</div>
+    </div>
+
+    <script>
+        // Fungsi buat efek floating hearts
+        function createHeart() {
+            const heart = document.createElement("div");
+            heart.classList.add("floating-heart");
+            heart.innerHTML = "❤️";
+            document.body.appendChild(heart);
+
+            const x = Math.random() * window.innerWidth;
+            const duration = Math.random() * 3 + 2;
+
+            heart.style.left = `${x}px`;
+            heart.style.animationDuration = `${duration}s`;
+
+            setTimeout(() => {
+                heart.remove();
+            }, duration * 1000);
+        }
+
+        setInterval(createHeart, 500); // Munculin hati setiap 0.5 detik
+    </script>
+</body>
+</html>
