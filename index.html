@@ -3,97 +3,137 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Semangat Kerjanya Sayang!</title>
+    <title>Semangat Kerja Sayang!</title>
     <style>
+        /* Background animasi berubah warna */
         body {
-            font-family: Arial, sans-serif;
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             text-align: center;
-            background-color: #ffebee;
-            color: #d32f2f;
-            padding: 50px;
-            overflow: hidden;
+            font-family: Arial, sans-serif;
+            color: white;
+            font-size: 24px;
+            animation: bgColorChange 10s infinite alternate;
         }
-        .container {
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-            display: inline-block;
-            position: relative;
-            z-index: 1;
+        
+        @keyframes bgColorChange {
+            0% { background-color: #ff4d4d; }
+            50% { background-color: #ffb84d; }
+            100% { background-color: #ff4da6; }
         }
-        h1 {
-            color: #b71c1c;
-        }
-        p {
-            font-size: 18px;
-        }
-        .heart {
+
+        /* Teks berkedip & melayang */
+        .animated-text {
             font-size: 50px;
-            color: red;
-            animation: pulse 1.5s infinite;
+            font-weight: bold;
+            animation: blink 1s infinite alternate, float 3s ease-in-out infinite;
         }
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.2); }
-            100% { transform: scale(1); }
+
+        @keyframes blink {
+            0% { opacity: 1; }
+            100% { opacity: 0.5; }
         }
-        /* Efek Floating Hearts */
-        .floating-heart {
-            position: absolute;
-            color: red;
-            font-size: 30px;
-            animation: float 5s infinite ease-in-out;
-        }
+
         @keyframes float {
-            0% {
-                transform: translateY(0) scale(1);
-                opacity: 1;
-            }
-            50% {
-                transform: translateY(-200px) scale(1.2);
-                opacity: 0.7;
-            }
-            100% {
-                transform: translateY(-400px) scale(1.5);
-                opacity: 0;
-            }
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+            100% { transform: translateY(0); }
+        }
+
+        /* Style tombol putar ulang musik */
+        .music-button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            background: white;
+            color: black;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        
+        /* Confetti/kembang api */
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
         }
     </style>
 </head>
 <body>
-    <audio autoplay loop>
-        <source src="https://www.bensound.com/bensound-music/bensound-romantic.mp3" type="audio/mpeg">
-        Maaf, browser kamu tidak mendukung audio.
-    </audio>
+    <!-- Efek Confetti -->
+    <canvas id="confetti"></canvas>
 
-    <div class="container">
-        <h1>Hai Sayang! ❤️</h1>
-        <p>Semangat kerja ya! Aku bangga banget sama kamu. Jangan lupa istirahat dan makan yang cukup.</p>
-        <p>Aku selalu dukung kamu! Love you! 😘</p>
-        <div class="heart">❤️</div>
+    <!-- Teks utama -->
+    <div>
+        <h1 class="animated-text">Semangat Kerja Sayang! 💖</h1>
+        <p>Aku selalu dukung kamu! Jangan lupa istirahat ya! 😘</p>
+
+        <!-- Musik otomatis diputar -->
+        <audio id="bg-music" autoplay loop>
+            <source src="https://www.mboxdrive.com/lovememories.mp3" type="audio/mp3">
+        </audio>
+
+        <!-- Efek suara confetti -->
+        <audio id="confetti-sound">
+            <source src="https://www.mboxdrive.com/confetti.mp3" type="audio/mp3">
+        </audio>
+        
+        <!-- Tombol untuk memutar ulang musik -->
+        <button class="music-button" onclick="playMusic()">Putar Musik 🎵</button>
     </div>
 
     <script>
-        // Fungsi buat efek floating hearts
-        function createHeart() {
-            const heart = document.createElement("div");
-            heart.classList.add("floating-heart");
-            heart.innerHTML = "❤️";
-            document.body.appendChild(heart);
-
-            const x = Math.random() * window.innerWidth;
-            const duration = Math.random() * 3 + 2;
-
-            heart.style.left = `${x}px`;
-            heart.style.animationDuration = `${duration}s`;
-
-            setTimeout(() => {
-                heart.remove();
-            }, duration * 1000);
+        // Fungsi untuk memutar ulang musik
+        function playMusic() {
+            document.getElementById("bg-music").play();
         }
 
-        setInterval(createHeart, 500); // Munculin hati setiap 0.5 detik
+        // Efek confetti/kembang api
+        let canvas = document.getElementById("confetti");
+        let ctx = canvas.getContext("2d");
+        let confetti = [];
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener("resize", resizeCanvas);
+        resizeCanvas();
+
+        function createConfetti() {
+            for (let i = 0; i < 100; i++) {
+                confetti.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    size: Math.random() * 5 + 5,
+                    speedY: Math.random() * 3 + 1,
+                    color: `hsl(${Math.random() * 360}, 100%, 70%)`
+                });
+            }
+            document.getElementById("confetti-sound").play(); // Efek suara saat confetti muncul
+        }
+        createConfetti();
+
+        function drawConfetti() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            confetti.forEach(particle => {
+                ctx.fillStyle = particle.color;
+                ctx.beginPath();
+                ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
+                ctx.fill();
+                particle.y += particle.speedY;
+                if (particle.y > canvas.height) particle.y = 0;
+            });
+            requestAnimationFrame(drawConfetti);
+        }
+        drawConfetti();
     </script>
 </body>
 </html>
